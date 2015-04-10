@@ -1,0 +1,34 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: ubuntu-14.04
+
+suites:
+  - name: default
+    run_list:
+      - recipe[deploy-play::default]
+    attributes: {
+    "playframework": {
+      "app_conf": {
+        "secret": "mysecret"
+      },
+      "app_args": [
+        "-Dhttp.port=8080",
+        "-J-Xms128M",
+        "-J-Xmx512m",
+        "-J-server"
+      ]
+    },
+    "java": {
+      "jdk_version": "8",
+      "install_flavor": "oracle",
+      "oracle": {
+        "accept_oracle_download_terms": "true"
+      }
+    }
+  }
